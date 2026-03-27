@@ -1,19 +1,39 @@
-# Program #3: Average Numbers
-# Assume a file containing a series of integers is named numbers.txt and exists on the computer's disk.
-# (please use the provided numbers.txt)
-# Write a program that reads all of the numbers stored in the file and calculates their total.  
+#Elliott Morris, 3/24/2026, Average Numbers.py
 
-# The program should handle the following exceptions: 
+#Function to sum all numbers in the file
+def sum_numbers_from_file(filename):
+    total = 0
 
-# It should handle any IOError exceptions that are raised.
-# It should handle any ValueError exceptions that are raised when the items that are read from the file 
-# are converted to a number.
-def sum_numbers_from_file():
-    ######################
-    # Add your code here #
-    ######################
-    print('In the sum_numbers_from_file function')
+    #Opens the file and gets the count
+    try:
+        with open(filename, 'r') as file:
+            for line_number,line in enumerate(file):
+                try:
+                    number = int(line.strip())
+                    total += number
+                except ValueError:
+                    print(f"Skipping line {line_number} due to an invalid value: {line.strip()}")
 
-# You don't need to change anything below this line:
+        #Displays the total
+        print(f"\nSum of all numbers from file: {total}")
+
+    #Handling for all errors
+    except FileNotFoundError:
+        print(f"Error: The file '{filename}' was not found.")
+    except PermissionError:
+        print(f"Error: You do not have permission to read '{filename}'.")
+    except IsADirectoryError:
+        print(f"Error: '{filename}' is a directory, not a file.")
+    except UnicodeDecodeError:
+        print(f"Error: Could not read '{filename}' due to encoding issues.")
+    except IOError:
+        print(f"Error: Could not read '{filename}'.")
+    except Exception as e:
+        print(f"An unexpected error occurred: {e}")
+
+def main():
+    filename = "numbers.txt"
+    sum_numbers_from_file(filename)
+
 if __name__ == '__main__':
-    sum_numbers_from_file()
+    main()
